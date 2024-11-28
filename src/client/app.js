@@ -9,7 +9,15 @@ async function fetchGreeting() {
     body: JSON.stringify({
       query: `
         query {
-          greeting
+          getOrders{
+    orderId
+    origin
+    marketplaceServicesEndpoint
+    totals {
+      id
+      name
+    }
+  }
         }
       `,
     }),
@@ -17,10 +25,11 @@ async function fetchGreeting() {
 
   const { data } = await response.json();
   console.log(data);
-  return data;
+  return data.getOrders;
 }
 
-fetchGreeting().then(({ greeting }) => {
+fetchGreeting().then((data) => {
+  console.log("response", data);
   const title = document.querySelector("h1");
-  title.textContent = greeting;
+  title.textContent = data.marketplaceServicesEndpoint;
 });
